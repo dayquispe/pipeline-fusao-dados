@@ -1,23 +1,4 @@
-import json
-import csv
-
 from processamento_dados import Dados
-
-def transformando_dados_tabela(dados, nomes_colunas):
-    dados_combinados_tabela = [nomes_colunas]
-
-    for row in dados:
-        linha = []
-        for coluna in nomes_colunas:
-            linha.append(row.get(coluna, 'Indiponivel'))
-        dados_combinados_tabela.append(linha)
-        
-    return dados_combinados_tabela
-
-def salvando_dados(dados, path):
-    with open(path, 'w') as file:
-        writer = csv.writer(file)
-        writer.writerows(dados)
 
 path_json = 'data_raw/dados_empresaA.json'
 path_csv = 'data_raw/dados_empresaB.csv'
@@ -33,7 +14,6 @@ print(f"Nome das colunas: {dados_empresaB.nome_colunas}")
 print(f"Qtd de linhas nos dados da empresa B: {dados_empresaB.qtd_linhas}")
 
 # Transform 
-
 # O key_mapping depende de um alinhamento com a equipe de analytics. (Uma regra de negócio)
 key_mapping = {'Nome do Item':'Nome do Produto',
                'Classificação do Produto':'Categoria do Produto',
@@ -49,3 +29,8 @@ dados_fusao = Dados.join(dados_empresaA, dados_empresaB)
 print(dados_fusao.nome_colunas)
 print(dados_fusao.qtd_linhas)
 
+# Load
+
+path_dados_combinados = 'data_processed/dados_combinados.csv'
+dados_fusao.salvando_dados(path_dados_combinados)
+print(path_dados_combinados)
